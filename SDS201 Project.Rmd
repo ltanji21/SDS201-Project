@@ -1,0 +1,40 @@
+---
+title: "Adoptions of Austin Texas"
+author: "Leigh Tanji, Carter Kyle, Naila Arsky"
+date: "2018”N3ŒŽ4“ú"
+output: html_document
+---
+
+### Purpose
+We hope to compare the fate of dogs and cats in Austin Tx, a no kill city. 
+
+```{r}
+Austin_Animals <- read.csv(("https://data.austintexas.gov/Health-and-Community-Services/Austin-Animal-Center-Outcomes/9t4d-g238/data"))
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
