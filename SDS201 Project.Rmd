@@ -8,8 +8,14 @@ output: html_document
 ### Purpose
 We hope to compare the fate of dogs and cats in Austin Tx, a no kill city. 
 
+### Data
+The data comes from the url `https://data.austintexas.gov/Health-and-Community-Services/Austin-Animal-Center-Outcomes/9t4d-g238`. It has 79.4K rows and 12 columns. Each row represents an animal and the columns include animal ID, name, date time, monthyear, date of birth, outcome, outcome subtype, breed, animal type, sex, age upon outcome, and color. 
+
 ```{r}
-Austin_Animals <- read.csv(("https://data.austintexas.gov/Health-and-Community-Services/Austin-Animal-Center-Outcomes/9t4d-g238/data"))
+
+Austin_Animals <- read_html("https://data.austintexas.gov/Health-and-Community-Services/Austin-Animal-Center-Outcomes/9t4d-g238/data") %>%
+  html_nodes("table") %>%
+  html_table(fill=TRUE)
 ```
 
 
