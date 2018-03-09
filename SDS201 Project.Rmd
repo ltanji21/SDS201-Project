@@ -4,17 +4,24 @@ author: "Leigh Tanji, Carter Kyle, Naila Arsky"
 date: "2018/03/08"
 output: html_document
 ---
+*git repository used: https://github.com/ltanji21/SDS201-Project/blob/master/SDS201%20Project.Rmd *
+
 
 ### Purpose
 
 The purpose of our project is to determine the correlations between sex, color, species, breed, age and fertility and the adoption of cats and dogs from Animal Center, a domestic shelter in Austin Texas, a no kill city.
 
+The general topic we want to study is the relationship between specific physical characteristics of animals and the rate of adoption. We plan to investigate whether or not some of these characteristics are correlated and whether or not this implies causation between these variables. If there is correlation between variables, we will investigate confounding variables. Our research may shed light on our hypothesis that animals with lighter colors tend to have a higher adoption rate, and that certain physical characteristics in a breed also affect the probability of an animal finding a home. Although we believe all of these factors are true according to common knowledge, the outcomes of this study may or may not confirm these beliefs.
+
 ### Data
 
 The data we are using is called Austin Animal Center Outcomes. It can be found at https://catalog.data.gov/dataset/austin-animal-center-outcomes-version-1-demo. This data set contains the outcome for animals taken in by animal shelters in Austin, Texas as well as the amount of time the animal was held in the shelter and physical descriptors of the animals such as age and breed.
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 #Trying to incorporate the data into R... Not succeeding 
+library(dplyr)
+library(rvest)
+library(xml2)
 
 Austin_Animals <- read_html("https://data.austintexas.gov/Health-and-Community-Services/Austin-Animal-Center-Outcomes/9t4d-g238/data") %>%
   html_nodes("table") %>%
@@ -30,6 +37,7 @@ Adoption rate in percentage. We believe that 80% of spayed/neutered animals, 50%
 
 ### Explanatory Variables
 
+Our explanatory variables are sex, color, animal type, breed, whether or not they were sterilized(spayed and neutered), and the age of the animal. The possible categories for sex are male and female. A few of the categories for dog breed are Labrador, Chihuahua, and Akita . A few of the categories for cat breed are domestic shorthair, domestic mediumhair, and ragdoll mix. A few of the possible categories for cat color are tabby, calico, and black. A few of the possible categories for dog color are cream, red, and black. The possible categories for animal type are dogs and cats. The possible categories for sterilized are sterilized and not sterilized. The units for age are months. All explanatory variables were made using physical observations of the animals 
 
 
 
