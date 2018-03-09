@@ -1,26 +1,34 @@
 ---
-title: "Adoptions of Austin Texas"
+title: "Outcome of Dogs and Cats Admitted to an Animal Shelter in a No Kill city"
 author: "Leigh Tanji, Carter Kyle, Naila Arsky"
 date: "2018”N3ŒŽ4“ú"
 output: html_document
 ---
 
 ### Purpose
-We hope to compare the fate of dogs and cats in Austin Tx, a no kill city. 
+
+The purpose of our project is to determine the correlations between sex, color, species, breed, age and fertility and the adoption of cats and dogs from Animal Center, a domestic shelter in Austin Texas, a no kill city.
 
 ### Data
-The data comes from the url `https://data.austintexas.gov/Health-and-Community-Services/Austin-Animal-Center-Outcomes/9t4d-g238`. It has 79.4K rows and 12 columns. Each row represents an animal and the columns include animal ID, name, date time, monthyear, date of birth, outcome, outcome subtype, breed, animal type, sex, age upon outcome, and color. 
+
+The data we are using is called Austin Animal Center Outcomes. It can be found at https://catalog.data.gov/dataset/austin-animal-center-outcomes-version-1-demo. This data set contains the outcome for animals taken in by animal shelters in Austin, Texas as well as the amount of time the animal was held in the shelter and physical descriptors of the animals such as age and breed.
 
 ```{r}
+#Trying to incorporate the data into R... Not succeeding 
 
 Austin_Animals <- read_html("https://data.austintexas.gov/Health-and-Community-Services/Austin-Animal-Center-Outcomes/9t4d-g238/data") %>%
   html_nodes("table") %>%
   html_table(fill=TRUE)
 ```
 
+### Population
 
+The observational units are dogs and cats that were taken into animal shelters in Austin, Texas. The larger population we are generalizing to is all dogs and cats in animal shelters in Austin, Texas. It has 79.4K rows and 12 columns. Each row represents an animal and the columns include animal ID, name, date time, monthyear, date of birth, outcome, outcome subtype, breed, animal type, sex, age upon outcome, and color. 
 
+### Response Variable
+Adoption rate in percentage. We believe that 80% of spayed/neutered animals, 50% female/male, and 50% animal types (i.e. cat vs. dog), were adopted. Within breeds, we believe that pitbulls and Japanese chins for dogs and sphinxes for cats will have lower percentages of adoption. Black coloured animals are also considered as having lower adoption rates. 
 
+### Explanatory Variables
 
 
 
