@@ -21,15 +21,44 @@ The data we are using is called Austin Animal Center Outcomes. It can be found a
 library(dplyr)
 library(ggplot2)
 library(oilabs)
+library(mosaic)
 
 Austin_Animals <- read.csv("https://data.austintexas.gov/api/views/9t4d-g238/rows.csv?accessType=DOWNLOAD")
 ```
 
 ## Data Dictionary
+
+
 ```{r}
 str(Austin_Animals)
+```
 
-tally(Austin_Animals, wt = Outcome.Type)
+```{r}
+favstats(~Age.upon.Outcome, data = Austin_Animals)
+
+Austin_Animals %>%
+  group_by(Outcome.Type) %>%
+  tally()
+
+Austin_Animals %>%
+  group_by(Outcome.Subtype) %>%
+  tally()
+
+Austin_Animals %>%
+  group_by(Animal.Type) %>%
+  tally()
+
+Austin_Animals %>%
+  group_by(Sex.upon.Outcome) %>%
+  tally()
+
+Austin_Animals %>%
+  group_by(Breed) %>%
+  tally()
+
+Austin_Animals %>%
+  group_by(Color) %>%
+  tally()
 ```
 
 
