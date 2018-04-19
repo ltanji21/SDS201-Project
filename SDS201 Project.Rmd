@@ -18,15 +18,20 @@ The general topic we want to study is the relationship between specific physical
 The data we are using is called Austin Animal Center Outcomes. It can be found at https://catalog.data.gov/dataset/austin-animal-center-outcomes-version-1-demo. This data set contains the outcome for animals taken in by animal shelters in Austin, Texas as well as the amount of time the animal was held in the shelter and physical descriptors of the animals such as age and breed.
 
 ```{r, warning=FALSE, message=FALSE}
-#Trying to incorporate the data into R... Not succeeding 
 library(dplyr)
-library(rvest)
-library(xml2)
+library(ggplot2)
+library(oilabs)
 
-Austin_Animals <- read_html("https://data.austintexas.gov/Health-and-Community-Services/Austin-Animal-Center-Outcomes/9t4d-g238/data") %>%
-  html_nodes("table") %>%
-  html_table(fill=TRUE)
+Austin_Animals <- read.csv("https://data.austintexas.gov/api/views/9t4d-g238/rows.csv?accessType=DOWNLOAD")
 ```
+
+## Data Dictionary
+```{r}
+str(Austin_Animals)
+
+tally(Austin_Animals, wt = Outcome.Type)
+```
+
 
 ### Population
 
