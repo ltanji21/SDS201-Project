@@ -34,9 +34,11 @@ str(Austin_Animals)
 ```
 
 ```{r}
+#The one quantitative variable
 favstats(~Age.upon.Outcome, data = Austin_Animals)
 
-Austin_Animals %>%
+# six other categotical variables
+ Austin_Animals %>%
   group_by(Outcome.Type) %>%
   tally()
 
