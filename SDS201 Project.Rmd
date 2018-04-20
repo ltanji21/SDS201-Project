@@ -16,7 +16,7 @@ The general topic we want to study is the relationship between specific physical
 
 ### Data
 
-The data we are using is called Austin Animal Center Outcomes. It can be found at https://catalog.data.gov/dataset/austin-animal-center-outcomes-version-1-demo. This data set contains the outcome for animals taken in by animal shelters in Austin, Texas as well as the amount of time the animal was held in the shelter and physical descriptors of the animals such as age and breed. For this analysis, we will only observe animals that were under the `Outcome.Type = "Adopted"`. 
+The data we are using is called Austin Animal Center Outcomes. It can be found at https://catalog.data.gov/dataset/austin-animal-center-outcomes-version-1-demo. This data set contains the outcome for animals taken in by animal shelters in Austin, Texas as well as the amount of time the animal was held in the shelter and physical descriptors of the animals such as age and breed. For this analysis, we will only observe animals that were under the `Outcome.Type = "Adopted"` and also use Logistic Regression.
 
 ```{r, warning=FALSE, message=FALSE}
 library(dplyr)
@@ -27,15 +27,45 @@ library(mosaic)
 Austin_Animals <- read.csv("https://data.austintexas.gov/api/views/9t4d-g238/rows.csv?accessType=DOWNLOAD")
 
 Adopted <- Austin_Animals %>%
-  filter(Outcome.Type == "Adopted")
+  filter(Outcome.Type == "Adoption")
 ```
 
 ## Data Dictionary
 
+*Str*
+The Str describes each of the twelve variables that we have in the dataframe “Adopted”. `Animal.ID` has 73442 levels which correspond to an adopted animal. The variable with the most levels. Interestingly, it has more entries than the dimension of the data frame itself. We are unsure about why this may be since each animal should only have one unique identifier. 
+Name has only 14882 levels since not all animals have names in the shelter.
+DateTime is made up of 67009 levels since some animals may have been taken in by the shelter at the same times.
+Again, Date.of.Birth also only has 5987 levels since some animals may have been born on the same day and year. 
+Outcome.Type has 10 levels (In reality, only has 1 since filtered by “Adoption”)
+Outcome.Subtype is made up of 20 levels corresponding to Barn, Foster, Offsite, etc. Again, the number of outcome subtypes are more than the number of levels. Should only be four. 
+Sex.Upon Outcome is a factor with 6 levels. Actually made up of 5 types: Intact Female, Intact Male, Neutered Male, Spayed Female, and Unknown. 
+Age.Upon.Outcome is a Factor with 47 levels. Not sure why there are so many levels since it’s not categorized.
+Breed has 2183 levels. In reality made up of 1543 breed lists.
+Color has 533 levels, again has 2768 colors of animals. 
 
+** Amount of the levels don’t seem to match the actual numbers in the variables. 
 ```{r}
 str(Adopted)
 ```
+
+*Favstats*
+The mean age upon outcome for adopted animals was 25 months. The oldest animal adopted was 45 months old and the youngest was 1 month old. 
+
+*Outcome.Subtype*
+Most of the adopted animals did not have a subtype: 82%. The variable subtype had 4 levels.
+
+*Animal.Type*
+The animal with the highest rate of adoption was dog, at 64% of all adopted animals. This variable had 5 levels.
+
+*Sex.Upon Outcome*
+Neutered males had the highest adoption rate, at 48% of all adopted animals. This variable had 5 levels. There were 70 animals whose sex was not known upon adoption. 
+
+*Breed*
+There are 1,543 levels for this variable. However, because all shelter animals are stray, the breeds of the parents of each animal are unknown. Therefore, we cannot be certain that the variable “Breed” is always accurate.
+
+*Color*
+There are 393 levels for this variable.
 
 ```{r}
 #The one quantitative variable
