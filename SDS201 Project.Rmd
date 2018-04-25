@@ -25,9 +25,6 @@ library(oilabs)
 library(mosaic)
 
 Austin_Animals <- read.csv("https://data.austintexas.gov/api/views/9t4d-g238/rows.csv?accessType=DOWNLOAD")
-
-Adopted <- Austin_Animals %>%
-  filter(Outcome.Type == "Adoption")
 ```
 
 ## Data Dictionary
@@ -57,7 +54,7 @@ The Str describes each of the twelve variables that we have in the dataframe “
 
 ** Amount of the levels don’t seem to match the actual numbers in the variables. 
 ```{r}
-str(Adopted)
+str(Austin_Animals)
 ```
 
 * *Favstats*
@@ -80,28 +77,36 @@ There are 393 levels for this variable.
 
 ```{r}
 #The one quantitative variable
-favstats(~Age.upon.Outcome, data = Adopted)
+favstats(~Age.upon.Outcome, data = Austin_Animals)
 
 # six other categotical variables
-Adopted %>%
+Austin_Animals %>%
   group_by(Outcome.Subtype) %>%
   tally()
 
-Adopted %>%
+Austin_Animals %>%
   group_by(Animal.Type) %>%
   tally()
 
-Adopted %>%
+Austin_Animals %>%
   group_by(Sex.upon.Outcome) %>%
   tally()
 
-Adopted %>%
+Austin_Animals %>%
   group_by(Breed) %>%
   tally()
 
-Adopted %>%
+Austin_Animals %>%
   group_by(Color) %>%
   tally()
+```
+
+```{r}
+Austin_Animals2 <- Austin_Animals %>%
+  filter(!Outcome.Type == "Rto-Adopt",
+         !Outcome.Type == "Return to Owner") %>%
+  mutate(Homed = ifelse(Outcome.Type == "Adoption", 1, 0)) %>%
+  select(DateTime, MonthYear, Date.of.Birth, Homed, Outcome.Subtype, Animal.Type, Sex.upon.Outcome, Age.upon.Outcome, Breed, Outcome.Type)
 ```
 
 
