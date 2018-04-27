@@ -23,11 +23,46 @@ library(dplyr)
 library(ggplot2)
 library(oilabs)
 library(mosaic)
+library(tidyr)
 
 Austin_Animals <- read.csv("https://data.austintexas.gov/api/views/9t4d-g238/rows.csv?accessType=DOWNLOAD")
 ```
 
 ## Data Dictionary
+
+```{r}
+#Cleaning Up data.
+Austin_Animals2 <- Austin_Animals %>%
+  filter(!Outcome.Type == "Rto-Adopt",
+         !Outcome.Type == "Return to Owner",
+         Sex.upon.Outcome!= "NULL",
+         Sex.upon.Outcome!= "Unknown",
+         Animal.Type %in% c("Cat", "Dog")) %>%
+  mutate(Homed = ifelse(Outcome.Type == "Adoption", 1, 0)) %>%
+  select(DateTime, MonthYear, Date.of.Birth, Homed, Outcome.Subtype, Animal.Type, Sex.upon.Outcome, Age.upon.Outcome, Breed, Outcome.Type, Color) %>%
+  mutate(Black = ifelse(Color %in% c("Black", 
+                                   "Black/Black", 
+                                   "Black Brindle/Black",
+                                   "Black Smoke",
+                                   "BLack Smoke/Black",
+                                   "Black Tabby/Black",
+                                   "Black/Black Brindle",
+                                   "Black/Black Smoke",
+                                   "Black/Black Tabby"), 1, 0)) %>%
+  separate(Age.upon.Outcome, c("num", "unit"), sep = " " , remove = FALSE) %>%
+  mutate(num = as.numeric(num),
+         age = ifelse(unit %in% c("day", "days"), num/30, 
+                      ifelse(unit %in% c("month", "months"), num, 
+                                         ifelse(unit %in% c("week", "weeks"), num/4, 
+                                                ifelse(unit %in% c("year", "years"), num*12, NA)))))
+```
+
+```{r}
+Austin_Animals2 <- Austin_Animals2 %>%
+  mutate(Sex = ifelse(Sex.upon.Outcome %>% c("Intact Female", "Spayed Female"), 1, 0)) %>%
+  mutate(Fixed = ifelse(Sex.upon.Outcome %>% c("Neutered Male", "Spayed Female"), 1, 0)) %>% 
+```
+
 
 **Str**
 The Str describes each of the twelve variables that we have in the dataframe “Adopted”. 
@@ -54,7 +89,7 @@ The Str describes each of the twelve variables that we have in the dataframe “
 
 ** Amount of the levels don’t seem to match the actual numbers in the variables. 
 ```{r}
-str(Austin_Animals)
+str(Austin_Animals2)
 ```
 
 * *Favstats*
@@ -77,36 +112,32 @@ There are 393 levels for this variable.
 
 ```{r}
 #The one quantitative variable
-favstats(~Age.upon.Outcome, data = Austin_Animals)
+favstats(~Age.upon.Outcome, data = Austin_Animals2)
 
 # six other categotical variables
-Austin_Animals %>%
+Austin_Animals2 %>%
   group_by(Outcome.Subtype) %>%
   tally()
 
-Austin_Animals %>%
+Austin_Animals2 %>%
   group_by(Animal.Type) %>%
   tally()
 
-Austin_Animals %>%
+Austin_Animals2 %>%
   group_by(Sex.upon.Outcome) %>%
   tally()
 
-Austin_Animals %>%
+Austin_Animals2 %>%
   group_by(Breed) %>%
   tally()
 
-Austin_Animals %>%
+Austin_Animals2 %>%
   group_by(Color) %>%
   tally()
-```
 
-```{r}
-Austin_Animals2 <- Austin_Animals %>%
-  filter(!Outcome.Type == "Rto-Adopt",
-         !Outcome.Type == "Return to Owner") %>%
-  mutate(Homed = ifelse(Outcome.Type == "Adoption", 1, 0)) %>%
-  select(DateTime, MonthYear, Date.of.Birth, Homed, Outcome.Subtype, Animal.Type, Sex.upon.Outcome, Age.upon.Outcome, Breed, Outcome.Type)
+Austin_Animals2 %>%
+  group_by(Homed) %>%
+  tally()
 ```
 
 
@@ -121,8 +152,12 @@ Adoption rate in percentage. We believe that 80% of spayed/neutered animals, 50%
 
 Our explanatory variables are sex, color, animal type, breed, whether or not they were sterilized(spayed and neutered), and the age of the animal. The possible categories for sex are male and female. A few of the categories for dog breed are Labrador, Chihuahua, and Akita . A few of the categories for cat breed are domestic shorthair, domestic mediumhair, and ragdoll mix. A few of the possible categories for cat color are tabby, calico, and black. A few of the possible categories for dog color are cream, red, and black. The possible categories for animal type are dogs and cats. The possible categories for sterilized are sterilized and not sterilized. The units for age are months. All explanatory variables were made using physical observations of the animals 
 
+### Analysis
 
+```{r}
+#sex, color, species, breed, age and fertility
 
+```
 
 
 
