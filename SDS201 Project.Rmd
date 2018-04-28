@@ -28,7 +28,7 @@ library(tidyr)
 Austin_Animals <- read.csv("https://data.austintexas.gov/api/views/9t4d-g238/rows.csv?accessType=DOWNLOAD")
 ```
 
-## Data Dictionary
+## Tidying up the Data
 
 ```{r}
 #Cleaning Up data.
@@ -59,35 +59,22 @@ Austin_Animals2 <- Austin_Animals %>%
 
 ```{r}
 Austin_Animals2 <- Austin_Animals2 %>%
-  mutate(Sex = ifelse(Sex.upon.Outcome %>% c("Intact Female", "Spayed Female"), 1, 0)) %>%
-  mutate(Fixed = ifelse(Sex.upon.Outcome %>% c("Neutered Male", "Spayed Female"), 1, 0)) %>% 
+  mutate(Sex = ifelse(Sex.upon.Outcome %in% c("Intact Female", "Spayed Female"), 1, 0)) %>%
+  mutate(Fixed = ifelse(Sex.upon.Outcome %in% c("Neutered Male", "Spayed Female"), 1, 0)) %>%
+  select(Homed, Animal.Type, num, unit, Breed, age, Fixed, Sex, Black)
 ```
 
 
 **Str**
-The Str describes each of the twelve variables that we have in the dataframe “Adopted”. 
+The Str describes each of the twelve variables that we have in the dataframe `Austin_Animals 2` All variables have 58693 variables.
 
-* `Animal.ID` has 73442 levels which correspond to an adopted animal. The variable with the most levels. Interestingly, it has more entries than the dimension of the data frame itself. We are unsure about why this may be since each animal should only have one unique identifier. 
+* `Homed` has 2 levels and describe whether the animal was adopted (1) or not adopted (0).
+* `Animal Type` has been filtered out to only inlude cats and dogs. Thus, it has only two levels in reality.
+* `num` and `unit` describe the age of the animal in weeks, months, and years.
+* `age` uses the above functions and puts all the ages in terms of months.
+* `Fixed` tells us whether the animal was fixed (1) or not (0).
+* `Sex` tells us the gender of the animal female (1) and male (0).
 
-* Name has only 14882 levels since not all animals have names in the shelter.
-
-* DateTime is made up of 67009 levels since some animals may have been taken in by the shelter at the same times.
-
-* Date.of.Birth also only has 5987 levels since some animals may have been born on the same day and year. 
-
-* Outcome.Type has 10 levels (In reality, only has 1 since filtered by “Adoption”)
-
-* Outcome.Subtype is made up of 20 levels corresponding to Barn, Foster, Offsite, etc. Again, the number of outcome subtypes are more than the number of levels. Should only be four. 
-
-* Sex.Upon Outcome is a factor with 6 levels. Actually made up of 5 types: Intact Female, Intact Male, Neutered Male, Spayed Female, and Unknown. 
-
-* Age.Upon.Outcome is a Factor with 47 levels. Not sure why there are so many levels since it’s not categorized.
-
-* Breed has 2183 levels. In reality made up of 1543 breed lists.
-
-* Color has 533 levels, again has 2768 colors of animals. 
-
-** Amount of the levels don’t seem to match the actual numbers in the variables. 
 ```{r}
 str(Austin_Animals2)
 ```
@@ -111,12 +98,9 @@ There are 1,543 levels for this variable. However, because all shelter animals a
 There are 393 levels for this variable.
 
 ```{r}
-#The one quantitative variable
-favstats(~Age.upon.Outcome, data = Austin_Animals2)
-
 # six other categotical variables
 Austin_Animals2 %>%
-  group_by(Outcome.Subtype) %>%
+  group_by(Homed) %>%
   tally()
 
 Austin_Animals2 %>%
@@ -124,19 +108,28 @@ Austin_Animals2 %>%
   tally()
 
 Austin_Animals2 %>%
-  group_by(Sex.upon.Outcome) %>%
+  group_by(num) %>%
   tally()
 
 Austin_Animals2 %>%
   group_by(Breed) %>%
   tally()
 
+
 Austin_Animals2 %>%
-  group_by(Color) %>%
+  group_by(age) %>%
   tally()
 
 Austin_Animals2 %>%
-  group_by(Homed) %>%
+  group_by(Fixed) %>%
+  tally()
+
+Austin_Animals2 %>%
+  group_by(Sex) %>%
+  tally()
+
+Austin_Animals2 %>%
+  group_by(Black) %>%
   tally()
 ```
 
@@ -151,6 +144,7 @@ Adoption rate in percentage. We believe that 80% of spayed/neutered animals, 50%
 ### Explanatory Variables
 
 Our explanatory variables are sex, color, animal type, breed, whether or not they were sterilized(spayed and neutered), and the age of the animal. The possible categories for sex are male and female. A few of the categories for dog breed are Labrador, Chihuahua, and Akita . A few of the categories for cat breed are domestic shorthair, domestic mediumhair, and ragdoll mix. A few of the possible categories for cat color are tabby, calico, and black. A few of the possible categories for dog color are cream, red, and black. The possible categories for animal type are dogs and cats. The possible categories for sterilized are sterilized and not sterilized. The units for age are months. All explanatory variables were made using physical observations of the animals 
+
 
 ### Analysis
 
