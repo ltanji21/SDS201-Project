@@ -150,8 +150,37 @@ Our explanatory variables are sex, color, animal type, breed, whether or not the
 
 ```{r}
 #sex, color, species, breed, age and fertility
+model_all <- glm(Homed ~ Animal.Type + Fixed + Sex + Black, family=binomial(link="logit"), data=Austin_Animals2)
+model_age <- glm(Homed ~ age, data = Austin_Animals2, family = binomial(link="logit"))
 
+# Create a temporary data frame of hypothetical values
+age_range <- data.frame(age = seq(from=0.03333333, to=264, by=0.01))
+dogcat <- data.frame(Animal.Type = seq(0, 1))
+sterilized <- data.frame(Fixed = seq(0, 1))
+gender <- data.frame(Animal.Type = seq(0, 1))
+dark <- data.frame(Animal.Type = seq(0, 1))
+
+
+# Predict the fitted values given the model and hypothetical data
+predicted.age <- as.data.frame(predict(model_age, newdata = age_range, type="link", se=TRUE))
+predicted.all <- as.data.frame(predict(model_all, newestdata = dogcat, newestdata2= sterilized, newestdata3 = gender, newestdata4 = dark, type = "link", se = TRUE))
+
+age.data <- cbind(age_range, predicted.age)
+all.data <- cbind(dogcat | sterilized | gender| dark, predicted.all)
+
+std <- qnorm(0.95 / 2 + 0.5)
+age.data$ymin <- model$family$linkinv(age.data$fit - std * age.data$se)
+age.data$ymax <- model$family$linkinv(age.data$fit + std * age.data$se)
+age.data$fit <- model$family$linkinv(age.data$fit)  # Rescale to 0-1
+
+# Plot everything
+p <- ggplot(Austin_Animals2, aes(x=age, y=Homed)) 
+p + geom_point() + 
+  geom_ribbon(data=age.data, aes(y=fit, ymin=ymin, ymax=ymax), alpha=0.5) + 
+  geom_line(data=age.data, aes(y=fit)) + 
+  labs(x="age", y="adopted") 
 ```
+
 
 
 
