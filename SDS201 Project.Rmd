@@ -178,7 +178,7 @@ p <- ggplot(Austin_Animals2, aes(x=age, y=Homed))
 p + geom_point() + 
   geom_ribbon(data=age.data, aes(y=fit, ymin=ymin, ymax=ymax), alpha=0.5) + 
   geom_line(data=age.data, aes(y=fit)) + 
-  labs(x="age", y="adopted") 
+  labs(x="Age (months)", y="Probability of Adoption") 
 ```
 
 
