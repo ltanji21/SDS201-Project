@@ -194,17 +194,18 @@ ggplot(Austin_Animals2, aes(x=age, y = Homed)) +
     se = FALSE) 
 ```
 
+
 ```{r}
 Austin_Animals3 <- Austin_Animals2 %>%
   group_by(Homed) %>%
-  summarise(Blackish = sum(Black == "1", Homed == "1"),
-            notBlack = sum(Black == "0", Homed == "1"),
-            Male = sum(Sex == "0", Homed == "1"),
-            Female = sum(Sex == "1", Homed == "1"),
-            unsexed = sum(Fixed == "1", Homed == "1"),
-            sexed = sum(Fixed == "0", Homed == "1"),
-            Canine = sum(Animal.Type == "Dog"),
-            Feline = sum(Animal.Type == "Cat"))
+  summarise(Blackish = 100*sum(Black == "1", Homed == "1")/39669,
+            notBlack = 100*sum(Black == "0", Homed == "1")/87782,
+            Male = 100*sum(Sex == "0", Homed == "1")/64049,
+            Female = 100*sum(Sex == "1", Homed == "1")/63402,
+            unsexed = 100*sum(Fixed == "1", Homed == "1")/77934,
+            sexed = 100*sum(Fixed == "0", Homed == "1")/49517,
+            Canine = 100*sum(Animal.Type == "Dog")/32653,
+            Feline = 100*sum(Animal.Type == "Cat")/26184)
 
 library(reshape2)
 Austin_Animals4 <- Austin_Animals3 %>%
@@ -212,10 +213,8 @@ Austin_Animals4 <- Austin_Animals3 %>%
   mutate(Adopted = c(0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1)) %>%
   filter(variable != "Homed")
        
-ggplot(Austin_Animals4, aes(x = variable, y = value, fill = Adopted)) + geom_bar(stat ="identity")
-
+ggplot(Austin_Animals4, aes(x = variable, y = value, fill = Adopted)) + geom_bar(stat ="identity") + ylab("Percentage Adopted") + xlab("Dogs and cats by characteristics")
 ```
-
 
 
 
